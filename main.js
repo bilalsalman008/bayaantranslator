@@ -6,6 +6,10 @@ let recognition;
 
 let isTranslating = false;
 
+async function translateText(text, targetLanguage) {
+    const apiKey = 'AIzaSyD7fEM_TUF-_vxagdZGzdf3-XsLfPkOnXo'; // Replace with your actual Google Cloud API key
+    const apiUrl = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
+
 function initializeRecognition() {
     recognition = new webkitSpeechRecognition();
     recognition.lang = 'en-US'; // Set the source language (e.g., English)
@@ -72,10 +76,6 @@ startButton.addEventListener('click', function () {
         button.style.backgroundColor = ''; // Reset to default
     }
 });
-
-async function translateText(text, targetLanguage) {
-    const apiKey = 'AIzaSyD7fEM_TUF-_vxagdZGzdf3-XsLfPkOnXo'; // Replace with your actual Google Cloud API key
-    const apiUrl = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
 
     try {
         // Display loading spinner or other feedback
