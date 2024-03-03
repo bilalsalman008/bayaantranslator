@@ -21,9 +21,12 @@ h1 {
     margin-top: 0;
 }
 
+.button-container {
+    text-align: center; /* Center the button */
+}
+
 button {
-    display: block;
-    width: 100%;
+    width: 200px; /* Set a fixed width for better appearance */
     padding: 10px;
     margin-bottom: 20px;
     background-color: #007bff;
@@ -40,6 +43,7 @@ button:hover {
 
 .translations {
     margin-top: 20px;
+    text-align: center; /* Center the "transcription" and "translation" areas */
 }
 
 .transcription,
@@ -48,42 +52,44 @@ button:hover {
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 5px;
     margin-bottom: 10px;
+    display: inline-block; /* Ensure they are centered horizontally */
 }
 
 .translation {
     background-color: rgba(255, 255, 255, 0.3);
 }
+
 .description {
-    color: #fff; /* Set text color to white */
+    color: #fff;
     text-align: center;
-    font-size: 18px; /* Adjust font size as needed */
-    margin-top: 20px; /* Add more margin for spacing */
-    line-height: 1.6; /* Increase line height for better readability */
-    font-family: 'Arial', sans-serif; /* Change 'YourProfessionalFont' to the chosen font */
+    font-size: 18px;
+    margin-top: 20px;
+    line-height: 1.6;
+    font-family: 'Arial', sans-serif;
 }
 
 .container {
-    text-align: center; /* Align the content in the center of the container */
+    text-align: center;
 }
+
 .header {
     display: flex;
     align-items: center;
 }
 
 .logo {
-    width: 90px; /* Adjust the width as needed */
-    margin-right: 10px; /* Adjust the margin as needed */
+    width: 90px;
+    margin-right: 10px;
 }
 
 h1 {
     margin-top: 0;
 }
 
-
 /* Styles for flexible images */
 img {
-    max-width: 100%; /* Ensure images don't exceed their container width */
-    height: auto;    /* Maintain the aspect ratio */
+    max-width: 100%;
+    height: auto;
 }
 
 /* Media query for small screens (phones) */
@@ -100,3 +106,4 @@ img {
 @media only screen and (min-width: 1025px) {
     /* Styles for larger screens (desktops) go here */
 }
+
