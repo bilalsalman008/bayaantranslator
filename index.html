@@ -15,7 +15,7 @@
 
             function initializeRecognition() {
                 recognition = new webkitSpeechRecognition();
-                recognition.lang = 'en-US'; // Set the source language (e.g., English)
+                recognition.lang = 'ur-PK'; // Set the source language (Urdu in Pakistan)
                 recognition.continuous = true; // Enable continuous mode
 
                 recognition.onresult = async function (event) {
@@ -100,7 +100,7 @@
                     });
 
                     const data = await response.json();
-                    return data.data.detections[0][0].detectedSourceLanguage;
+                    return data.data.detections[0][0].language;
                 } catch (err) {
                     console.error('Language detection error:', err);
                     throw new Error('Language detection failed. Please try again.');
