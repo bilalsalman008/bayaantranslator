@@ -1,5 +1,4 @@
 const express = require('express');
-const fetch = require('node-fetch');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -7,11 +6,13 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 app.post('/translate', async (req, res) => {
-  const apiKey = 'YOUR_GOOGLE_TRANSLATE_API_KEY';
-  const apiUrl = 'https://translation.googleapis.com/language/translate/v2';
-
   try {
-    const response = await fetch(`${apiUrl}?key=${apiKey}`, {
+    // Dynamic import for ESM compatibility
+    const fetch = await import('node-fetch');
+    const apiKey = 'YOUR_GOOGLE_TRANSLATE_API_KEY';
+    const apiUrl = 'https://translation.googleapis.com/language/translate/v2';
+
+    const response = await fetch.default(`${apiUrl}?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
