@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
     <title>Voice Translation</title>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -20,16 +19,16 @@
                 recognition.continuous = true; // Enable continuous mode
 
                 recognition.onresult = async function (event) {
-                    const transcript = event.results[event.results.length - 1][0].transcript;
-                    transcriptionElement.innerText = `Transcription: ${transcript}`;
+                    const audioContent = event.results[event.results.length - 1][0].transcript;
+                    transcriptionElement.innerText = `Transcription: ${audioContent}`;
 
                     if (isTranslating) {
                         // Dynamically detect the source language
-                        const detectedLanguage = await detectLanguage(transcript);
+                        const detectedLanguage = await detectLanguage(audioContent);
 
-                        // Translate the transcript to English using Google Cloud Translation API
+                        // Translate the audio content to English
                         try {
-                            const result = await translateText(transcript, detectedLanguage, 'en');
+                            const result = await translateAudio(audioContent, detectedLanguage, 'en');
                             translationElement.innerText = `Translation: ${result}`;
                         } catch (err) {
                             console.error('Translation error:', err);
@@ -102,14 +101,13 @@
 
                     const data = await response.json();
                     return data.data.detections[0][0].detectedSourceLanguage;
-
                 } catch (err) {
                     console.error('Language detection error:', err);
                     throw new Error('Language detection failed. Please try again.');
                 }
             }
 
-            async function translateText(text, sourceLanguage, targetLanguage) {
+            async function translateAudio(audioContent, sourceLanguage, targetLanguage) {
                 const apiKey = 'AIzaSyCTPg2sV7dQ-nfZQwQf2BN73jcs7WLdpHM';
                 const apiUrl = 'https://translation.googleapis.com/language/translate/v2';
 
@@ -117,20 +115,13 @@
                     // Display loading spinner or other feedback
                     translationElement.innerText = 'Translation: Loading...';
 
-                    // Log request payload
-                    console.log('Request Payload:', JSON.stringify({
-                        q: text,
-                        source: sourceLanguage,
-                        target: targetLanguage,
-                    }));
-
                     const response = await fetch(`${apiUrl}?key=${apiKey}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            q: text,
+                            q: audioContent,
                             source: sourceLanguage,
                             target: targetLanguage,
                         }),
