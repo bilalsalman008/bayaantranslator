@@ -1,103 +1,115 @@
-const transcriptionElement = document.getElementById('transcription');
-const translationElement = document.getElementById('translation');
-const startButton = document.getElementById('startButton');
+document.addEventListener('DOMContentLoaded', () => {
+    const transcriptionElement = document.getElementById('transcription');
+    const translationElement = document.getElementById('translation');
+    const startButton = document.getElementById('startButton');
 
-let recognition;
+    let recognition;
+    let isTranslating = false;
 
-let isTranslating = false;
+    function initializeRecognition() {
+        recognition = new webkitSpeechRecognition();
+        recognition.lang = 'en-US'; // Set the source language (e.g., English)
+        recognition.continuous = true; // Enable continuous mode
 
-function initializeRecognition() {
-    recognition = new webkitSpeechRecognition();
-    recognition.lang = 'auto'; // Let the browser detect the language
-    recognition.continuous = true;
+        recognition.onresult = function (event) {
+            const transcript = event.results[event.results.length - 1][0].transcript;
+            transcriptionElement.innerText = `Transcription: ${transcript}`;
 
-    recognition.onresult = function (event) {
-        const transcript = event.results[event.results.length - 1][0].transcript;
-        transcriptionElement.innerText = `Transcription: ${transcript}`;
+            if (isTranslating) {
+                // Translate the transcript to English using Google Cloud Translation API
+                translateText(transcript, 'en').then(result => {
+                    translationElement.innerText = `Translation: ${result}`;
+                }).catch(err => {
+                    console.error('Translation error:', err);
+                    translationElement.innerText = 'Translation: Error. Please try again.';
+                });
+            }
+        };
 
-        if (isTranslating) {
-            translateText(transcript, 'en').then(result => {
-                translationElement.innerText = `Translation: ${result}`;
-            }).catch(err => {
-                console.error('Translation error:', err);
-                translationElement.innerText = 'Translation: Error. Please try again.';
-            });
-        }
-    };
+        recognition.onerror = function (event) {
+            console.error('Speech recognition error:', event.error);
+            // Handle errors, e.g., display an error message to the user
+        };
 
-    recognition.onerror = function (event) {
-        console.error('Speech recognition error:', event.error);
-    };
+        recognition.onend = function () {
+            if (isTranslating) {
+                // Re-initialize recognition if it ended unexpectedly
+                initializeRecognition();
+                // Introduce a delay before restarting to avoid potential issues
+                setTimeout(() => {
+                    recognition.start();
+                }, 1000); // Adjust the delay as needed
+            }
+        };
+    }
 
-    recognition.onend = function () {
-        if (isTranslating) {
-            initializeRecognition();
-            setTimeout(() => {
+    initializeRecognition();
+
+    // Add an event listener to the startButton
+    startButton.addEventListener('click', function () {
+        const button = document.getElementById("startButton");
+
+        if (button.textContent === "Start Recording") {
+            button.textContent = "Stop Translating";
+            isTranslating = true;
+
+            // Start or restart recognition
+            if (recognition) {
                 recognition.start();
-            }, 1000);
-        }
-    };
-}
+            } else {
+                initializeRecognition();
+                recognition.start();
+            }
 
-initializeRecognition();
-
-startButton.addEventListener('click', function () {
-    const button = document.getElementById("startButton");
-
-    if (button.textContent === "Start Recording") {
-        button.textContent = "Stop Translating";
-        isTranslating = true;
-
-        if (recognition) {
-            recognition.start();
+            // Add UI feedback, for example:
+            button.style.backgroundColor = 'red';
         } else {
-            initializeRecognition();
-            recognition.start();
+            button.textContent = "Start Recording";
+            isTranslating = false;
+            recognition.stop();
+
+            // Reset UI feedback, for example:
+            button.style.backgroundColor = ''; // Reset to default
         }
+    });
 
-        button.style.backgroundColor = 'red';
-    } else {
-        button.textContent = "Start Recording";
-        isTranslating = false;
-        recognition.stop();
+    async function translateText(text, targetLanguage) {
+        // Replace 'YOUR_GOOGLE_TRANSLATE_API_KEY' with your actual Google Cloud API key
+        const apiKey = 'AIzaSyAq5GlJNnQaA253zywityNt73bV7YZ1TBk';
+        const apiUrl = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
 
-        button.style.backgroundColor = '';
+        try {
+            // Display loading spinner or other feedback
+            translationElement.innerText = 'Translation: Loading...';
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    q: text,
+                    source: 'auto', // Source language auto-detection
+                    target: targetLanguage,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (!data.data || !data.data.translations || !data.data.translations[0] || !data.data.translations[0].translatedText) {
+                throw new Error('Translation response is missing expected data.');
+            }
+
+            return data.data.translations[0].translatedText;
+        } catch (err) {
+            console.error('Translation error:', err);
+            throw new Error('Translation failed. Please try again.');
+        } finally {
+            // Hide loading spinner or other feedback
+        }
     }
 });
-
-async function translateText(text, targetLanguage) {
-    const apiUrl = 'https://bayaantranslator.com/translate'; // Assuming your server is serving the translation route
-
-    try {
-        translationElement.innerText = 'Translation: Loading...';
-
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                text: text,
-                sourceLanguage: 'auto', // Let the server detect the source language
-                targetLanguage: targetLanguage,
-            }),
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        if (!data.data || !data.data.translations || !data.data.translations[0] || !data.data.translations[0].translatedText) {
-            throw new Error('Translation response is missing expected data.');
-        }
-
-        return data.data.translations[0].translatedText;
-    } catch (err) {
-        console.error('Translation error:', err);
-        throw new Error('Translation failed. Please try again.');
-    } finally {
-        // Hide loading spinner or other feedback
-    }
-}
