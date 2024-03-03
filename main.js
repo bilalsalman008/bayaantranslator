@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function translateText(text, targetLanguage) {
         const apiKey = 'AIzaSyD7fEM_TUF-_vxagdZGzdf3-XsLfPkOnXo';
-        const apiUrl = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
+        const apiUrl = `https://translation.googleapis.com/language/translate/v2?key=AIzaSyD7fEM_TUF-_vxagdZGzdf3-XsLfPkOnXo`;
 
         try {
             // Display loading spinner or other feedback
