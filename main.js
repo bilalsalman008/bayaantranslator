@@ -81,6 +81,12 @@ async function translateText(text, targetLanguage) {
         // Display loading spinner or other feedback
         translationElement.innerText = 'Translation: Loading...';
 
+        // Add console logs for debugging
+        console.log('Text:', text);
+        console.log('Source Language:', 'en'); // Change this if the source language is dynamic
+        console.log('Target Language:', targetLanguage);
+        console.log('Request Payload:', JSON.stringify({ q: text, source: 'en', target: targetLanguage }));
+
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
@@ -111,4 +117,5 @@ async function translateText(text, targetLanguage) {
         // Hide loading spinner or other feedback
     }
 }
+
 
