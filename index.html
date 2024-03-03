@@ -3,19 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voice Translation</title>
     <link rel="stylesheet" href="styles.css">
+    <title>Voice Translation</title>
 </head>
 <body>
-    <div class="container">
-        <img src="logo.png" alt="Bayaan Translator Logo" class="logo">
-        <h1>Bismillah Bayaan Translator</h1>
+    <div id="app">
         <button id="startButton">Start Recording</button>
-        <p class="description">Translate a Bayaan, in real-time, all with a click of a button</p>
-        <div class="translations">
-            <p id="transcription" class="transcription"></p>
-            <p id="translation" class="translation"></p>
-        </div>
+        <p id="transcription">Transcription: </p>
+        <p id="translation">Translation: </p>
     </div>
     <script src="main.js"></script>
 </body>
