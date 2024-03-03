@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     async function translateText(text, targetLanguage) {
-        const apiKey = 'AIzaSyAq5GlJNnQaA253zywityNt73bV7YZ1TBk';
+        const apiKey = 'AIzaSyD7fEM_TUF-_vxagdZGzdf3-XsLfPkOnXo';
         const apiUrl = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
 
         try {
