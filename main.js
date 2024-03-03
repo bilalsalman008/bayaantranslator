@@ -74,42 +74,49 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     async function translateText(text, targetLanguage) {
-        // Replace 'YOUR_GOOGLE_TRANSLATE_API_KEY' with your actual Google Cloud API key
-        const apiKey = 'AIzaSyAq5GlJNnQaA253zywityNt73bV7YZ1TBk';
-        const apiUrl = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
+    const apiKey = 'YOUR_GOOGLE_TRANSLATE_API_KEY';
+    const apiUrl = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
 
-        try {
-            // Display loading spinner or other feedback
-            translationElement.innerText = 'Translation: Loading...';
+    try {
+        // Display loading spinner or other feedback
+        translationElement.innerText = 'Translation: Loading...';
 
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    q: text,
-                    source: 'auto', // Source language auto-detection
-                    target: targetLanguage,
-                }),
-            });
+        // Log request payload
+        console.log('Request Payload:', JSON.stringify({ q: text, source: 'auto', target: targetLanguage }));
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                q: text,
+                source: 'auto',
+                target: targetLanguage,
+            }),
+        });
 
-            const data = await response.json();
+        // Log response details
+        console.log('Response Status:', response.status);
+        console.log('Response Body:', await response.json());
 
-            if (!data.data || !data.data.translations || !data.data.translations[0] || !data.data.translations[0].translatedText) {
-                throw new Error('Translation response is missing expected data.');
-            }
-
-            return data.data.translations[0].translatedText;
-        } catch (err) {
-            console.error('Translation error:', err);
-            throw new Error('Translation failed. Please try again.');
-        } finally {
-            // Hide loading spinner or other feedback
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
+        const data = await response.json();
+
+        if (!data.data || !data.data.translations || !data.data.translations[0] || !data.data.translations[0].translatedText) {
+            throw new Error('Translation response is missing expected data.');
+        }
+
+        return data.data.translations[0].translatedText;
+    } catch (err) {
+        console.error('Translation error:', err);
+        throw new Error('Translation failed. Please try again.');
+    } finally {
+        // Hide loading spinner or other feedback
     }
+}
+
 });
