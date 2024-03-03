@@ -1,37 +1,102 @@
-/* styles.css */
-
 body {
-    background-image: url('backround.jpg'); /* Replace 'your-image-url.jpg' with the actual path or URL of your image */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    font-family: Arial, sans-serif;
     margin: 0;
-    font-family: 'Arial', sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh; /* Set the height to cover the entire viewport */
+    padding: 0;
+    background: url('backround.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
 }
 
-#app {
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
     text-align: center;
-    padding: 50px;
-    background-color: rgba(255, 255, 255, 0.8); /* Add a semi-transparent white background to the app */
-    border-radius: 10px; /* Add border radius for a rounded appearance */
+    margin-top: 0;
 }
 
 button {
-    font-size: 16px;
-    padding: 10px 20px;
-    cursor: pointer;
-    background-color: #4CAF50;
-    color: white;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #007bff;
+    color: #fff;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-p {
-    font-size: 18px;
-    margin: 20px 0;
-    color: #333;
+button:hover {
+    background-color: #0056b3;
+}
+
+.translations {
+    margin-top: 20px;
+}
+
+.transcription,
+.translation {
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.translation {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+.description {
+    color: #fff; /* Set text color to white */
+    text-align: center;
+    font-size: 18px; /* Adjust font size as needed */
+    margin-top: 20px; /* Add more margin for spacing */
+    line-height: 1.6; /* Increase line height for better readability */
+    font-family: 'Arial', sans-serif; /* Change 'YourProfessionalFont' to the chosen font */
+}
+
+.container {
+    text-align: center; /* Align the content in the center of the container */
+}
+.header {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 90px; /* Adjust the width as needed */
+    margin-right: 10px; /* Adjust the margin as needed */
+}
+
+h1 {
+    margin-top: 0;
+}
+
+
+/* Styles for flexible images */
+img {
+    max-width: 100%; /* Ensure images don't exceed their container width */
+    height: auto;    /* Maintain the aspect ratio */
+}
+
+/* Media query for small screens (phones) */
+@media only screen and (max-width: 600px) {
+    /* Styles for small screens (phones) go here */
+}
+
+/* Media query for medium-sized screens (tablets) */
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+    /* Styles for medium-sized screens (tablets) go here */
+}
+
+/* Media query for larger screens (desktops) */
+@media only screen and (min-width: 1025px) {
+    /* Styles for larger screens (desktops) go here */
 }
