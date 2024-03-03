@@ -66,7 +66,7 @@ startButton.addEventListener('click', function () {
 });
 
 async function translateText(text, targetLanguage) {
-    const apiUrl = '/translate'; // Assuming your server is serving the translation route
+    const apiUrl = 'https://bayaantranslator.com/translate'; // Assuming your server is serving the translation route
 
     try {
         translationElement.innerText = 'Translation: Loading...';
