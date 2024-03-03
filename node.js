@@ -1,7 +1,11 @@
 const express = require('express');
+const cors = require('cors');
+const fetch = require('node-fetch');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use(cors()); // Enable CORS
 
 app.use(express.json());
 
@@ -11,11 +15,10 @@ app.get('/', (req, res) => {
 
 app.post('/translate', async (req, res) => {
   try {
-    const fetch = await import('node-fetch');
     const apiKey = 'YOUR_GOOGLE_TRANSLATE_API_KEY';
     const apiUrl = 'https://translation.googleapis.com/language/translate/v2';
 
-    const response = await fetch.default(`${apiUrl}?key=${apiKey}`, {
+    const response = await fetch(`${apiUrl}?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -38,3 +41,4 @@ app.post('/translate', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
