@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 app.post('/translate', async (req, res) => {
-  const apiKey = 'YOUR_GOOGLE_TRANSLATE_API_KEY';
+  const apiKey = 'AIzaSyAq5GlJNnQaA253zywityNt73bV7YZ1TBk';
   const apiUrl = 'https://translation.googleapis.com/language/translate/v2';
 
   try {
