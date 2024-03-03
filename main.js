@@ -74,7 +74,7 @@ startButton.addEventListener('click', function () {
 });
 
 async function translateText(text, targetLanguage) {
-    const subscriptionKey = 'a461330c73ed435bacf3a5191b954a82';
+    const subscriptionKey = 'aadba2525f6b94a848920b1831ea99ff4';
     const endpoint = 'https://api.cognitive.microsofttranslator.com/';
     const apiUrl = `${endpoint}/translate?api-version=3.0&to=${targetLanguage}`;
 
