@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     async function translateText(text, targetLanguage) {
-    const apiKey = 'AIzaSyAq5GlJNnQaA253zywityNt73bV7YZ1TBk';
+    const apiKey = 'AIzaSyD7fEM_TUF-_vxagdZGzdf3-XsLfPkOnXo';
     const apiUrl = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
 
     try {
@@ -98,20 +98,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Log response details
         console.log('Response Status:', response.status);
-        console.log('Response Body:', await response.json());
+        const responseData = await response.json();
+        console.log('Response Body:', responseData);
 
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(`HTTP error! Status: ${response.status}. Error: ${errorData.error.message}`);
+            throw new Error(`HTTP error! Status: ${response.status}. Error: ${responseData.error.message}`);
         }
 
-        const data = await response.json();
-
-        if (!data.data || !data.data.translations || !data.data.translations[0] || !data.data.translations[0].translatedText) {
+        if (!responseData.data || !responseData.data.translations || !responseData.data.translations[0] || !responseData.data.translations[0].translatedText) {
             throw new Error('Translation response is missing expected data.');
         }
 
-        return data.data.translations[0].translatedText;
+        return responseData.data.translations[0].translatedText;
     } catch (err) {
         console.error('Translation error:', err);
         throw new Error('Translation failed. Please try again.');
@@ -119,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Hide loading spinner or other feedback
     }
 }
+
 
 
 
