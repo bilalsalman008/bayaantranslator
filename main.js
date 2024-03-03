@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     async function translateText(text, targetLanguage) {
-    const apiKey = 'YOUR_GOOGLE_TRANSLATE_API_KEY';
+    const apiKey = 'AIzaSyAq5GlJNnQaA253zywityNt73bV7YZ1TBk';
     const apiUrl = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
 
     try {
@@ -101,7 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Response Body:', await response.json());
 
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            const errorData = await response.json();
+            throw new Error(`HTTP error! Status: ${response.status}. Error: ${errorData.error.message}`);
         }
 
         const data = await response.json();
@@ -118,5 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Hide loading spinner or other feedback
     }
 }
+
+
 
 });
