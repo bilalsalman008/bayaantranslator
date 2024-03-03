@@ -75,48 +75,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     async function translateText(text, targetLanguage) {
-        const apiKey = 'AIzaSyCTPg2sV7dQ-nfZQwQf2BN73jcs7WLdpHM';
-        const apiUrl = `https://translation.googleapis.com/language/translate/v2?key=AIzaSyCTPg2sV7dQ-nfZQwQf2BN73jcs7WLdpHM`;
+  const apiKey = 'YOUR_GOOGLE_TRANSLATE_API_KEY';
+  const apiUrl = 'https://translation.googleapis.com/language/translate/v2';
 
-        try {
-            // Display loading spinner or other feedback
-            translationElement.innerText = 'Translation: Loading...';
+  try {
+    // Display loading spinner or other feedback
+    translationElement.innerText = 'Translation: Loading...';
 
-            // Log request payload
-            console.log('Request Payload:', JSON.stringify({ q: text, source: 'auto', target: targetLanguage }));
+    // Log request payload
+    console.log('Request Payload:', JSON.stringify({
+      q: text,
+      source: 'auto',
+      target: targetLanguage, // Add the target language code here
+    }));
 
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    q: text,
-                    source: 'auto',
-                    target: targetLanguage,
-                }),
-            });
+    const response = await fetch(`${apiUrl}?key=${apiKey}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        q: text,
+        source: 'auto',
+        target: targetLanguage, // Add the target language code here
+      }),
+    });
 
-            // Log response details
-            console.log('Response Status:', response.status);
-            const responseData = await response.json();
-            console.log('Response Body:', responseData);
+    // Rest of your code...
+  } catch (err) {
+    console.error('Translation error:', err);
+    throw new Error('Translation failed. Please try again.');
+  } finally {
+    // Hide loading spinner or other feedback
+  }
+}
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}. Error: ${responseData.error.message}`);
-            }
-
-            if (!responseData.data || !responseData.data.translations || !responseData.data.translations[0] || !responseData.data.translations[0].translatedText) {
-                throw new Error('Translation response is missing expected data.');
-            }
-
-            return responseData.data.translations[0].translatedText;
-        } catch (err) {
-            console.error('Translation error:', err);
-            throw new Error('Translation failed. Please try again.');
-        } finally {
-            // Hide loading spinner or other feedback
-        }
-    }
 });
 
