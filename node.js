@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 
 app.post('/translate', async (req, res) => {
   try {
-    const apiKey = 'YOUR_GOOGLE_TRANSLATE_API_KEY';
+    const apiKey = 'AIzaSyAq5GlJNnQaA253zywityNt73bV7YZ1TBk';
     const apiUrl = 'https://translation.googleapis.com/language/translate/v2';
 
     const response = await fetch(`${apiUrl}?key=${apiKey}`, {
