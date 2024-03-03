@@ -5,11 +5,14 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.send('Welcome to Bayaan Translator!');
+});
+
 app.post('/translate', async (req, res) => {
   try {
-    // Dynamic import for ESM compatibility
     const fetch = await import('node-fetch');
-    const apiKey = 'AIzaSyAq5GlJNnQaA253zywityNt73bV7YZ1TBk';
+    const apiKey = 'YOUR_GOOGLE_TRANSLATE_API_KEY';
     const apiUrl = 'https://translation.googleapis.com/language/translate/v2';
 
     const response = await fetch.default(`${apiUrl}?key=${apiKey}`, {
