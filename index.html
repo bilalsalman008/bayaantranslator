@@ -16,7 +16,10 @@
 
             async function initializeRecognition() {
                 try {
-                    recognition = new webkitSpeechRecognition() || new SpeechRecognition(); // Check for Web Speech API support
+                    // Prompt for microphone access
+                    await navigator.mediaDevices.getUserMedia({ audio: true });
+
+                    recognition = new webkitSpeechRecognition();
                     recognition.lang = 'ur-IN'; // Set the source language (Urdu in Pakistan)
                     recognition.continuous = true; // Enable continuous mode
 
@@ -55,7 +58,7 @@
                         }
                     };
                 } catch (error) {
-                    console.error('Error initializing recognition:', error);
+                    console.error('Error accessing microphone:', error);
                     // Handle errors, e.g., display an error message to the user
                 }
             }
@@ -93,11 +96,56 @@
             });
 
             async function detectLanguage(text) {
-                // Use your language detection logic here
+                const apiKey = 'AIzaSyCTPg2sV7dQ-nfZQwQf2BN73jcs7WLdpHM';
+                const apiUrl = 'https://translation.googleapis.com/language/translate/v2/detect';
+
+                try {
+                    const response = await fetch(`${apiUrl}?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            q: text,
+                        }),
+                    });
+
+                    const data = await response.json();
+                    return data.data.detections[0][0].language;
+                } catch (err) {
+                    console.error('Language detection error:', err);
+                    throw new Error('Language detection failed. Please try again.');
+                }
             }
 
             async function translateAudio(audioContent, sourceLanguage, targetLanguage) {
-                // Use your translation logic here
+                const apiKey = 'AIzaSyCTPg2sV7dQ-nfZQwQf2BN73jcs7WLdpHM';
+                const apiUrl = 'https://translation.googleapis.com/language/translate/v2';
+
+                try {
+                    // Display loading spinner or other feedback
+                    translationElement.innerText = 'Translation: Loading...';
+
+                    const response = await fetch(`${apiUrl}?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            q: audioContent,
+                            source: sourceLanguage,
+                            target: targetLanguage,
+                        }),
+                    });
+
+                    const resultData = await response.json();
+                    return resultData.data.translations[0].translatedText;
+                } catch (err) {
+                    console.error('Translation error:', err);
+                    throw new Error('Translation failed. Please try again.');
+                } finally {
+                    // Hide loading spinner or other feedback
+                }
             }
         });
     </script>
@@ -114,4 +162,3 @@
     </div>
 </body>
 </html>
-
