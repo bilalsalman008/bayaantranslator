@@ -62,6 +62,7 @@
                 const button = document.getElementById('startButton');
 
                 if (button.textContent === 'Start Recording') {
+                    console.log('Starting recognition...'); // Add a debugging statement
                     button.textContent = 'Stop Translating';
                     isTranslating = true;
 
@@ -76,6 +77,7 @@
                     // Add UI feedback, for example:
                     button.style.backgroundColor = 'red';
                 } else {
+                    console.log('Stopping recognition...'); // Add a debugging statement
                     button.textContent = 'Start Recording';
                     isTranslating = false;
                     recognition.stop();
