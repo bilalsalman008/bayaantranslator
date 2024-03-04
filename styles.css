@@ -11,6 +11,7 @@ body {
     height: 100vh; /* Ensure full height of the viewport */
 }
 
+
 .container {
     width: 80%; /* Adjust the width as needed */
     background-color: rgba(0, 0, 0, 0.7);
