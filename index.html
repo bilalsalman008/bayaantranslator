@@ -11,8 +11,10 @@
             const translationElement = document.getElementById('translation');
             const startButton = document.getElementById('startButton');
 
-            let recognition;
             let isTranslating = false;
+            let audioContext;
+            let mediaRecorder;
+            let audioChunks = [];
 
             async function initializeRecognition() {
                 try {
@@ -172,4 +174,5 @@
     </div>
 </body>
 </html>
+
 
