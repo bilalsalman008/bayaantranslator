@@ -14,45 +14,53 @@
             let recognition;
             let isTranslating = false;
 
-            function initializeRecognition() {
-                recognition = new webkitSpeechRecognition();
-                recognition.lang = 'ur-IN'; // Set the source language (Urdu in Pakistan)
-                recognition.continuous = true; // Enable continuous mode
+            async function initializeRecognition() {
+                try {
+                    // Prompt for microphone access
+                    await navigator.mediaDevices.getUserMedia({ audio: true });
 
-                recognition.onresult = async function (event) {
-                    const audioContent = event.results[event.results.length - 1][0].transcript;
-                    transcriptionElement.innerText = `Transcription: ${audioContent}`;
+                    recognition = new webkitSpeechRecognition();
+                    recognition.lang = 'ur-IN'; // Set the source language (Urdu in Pakistan)
+                    recognition.continuous = true; // Enable continuous mode
 
-                    if (isTranslating) {
-                        // Dynamically detect the source language
-                        const detectedLanguage = await detectLanguage(audioContent);
+                    recognition.onresult = async function (event) {
+                        const audioContent = event.results[event.results.length - 1][0].transcript;
+                        transcriptionElement.innerText = `Transcription: ${audioContent}`;
 
-                        // Translate the audio content to English
-                        try {
-                            const result = await translateAudio(audioContent, detectedLanguage, 'en');
-                            translationElement.innerText = `Translation: ${result}`;
-                        } catch (err) {
-                            console.error('Translation error:', err);
-                            translationElement.innerText = 'Translation: Error. Please try again.';
+                        if (isTranslating) {
+                            // Dynamically detect the source language
+                            const detectedLanguage = await detectLanguage(audioContent);
+
+                            // Translate the audio content to English
+                            try {
+                                const result = await translateAudio(audioContent, detectedLanguage, 'en');
+                                translationElement.innerText = `Translation: ${result}`;
+                            } catch (err) {
+                                console.error('Translation error:', err);
+                                translationElement.innerText = 'Translation: Error. Please try again.';
+                            }
                         }
-                    }
-                };
+                    };
 
-                recognition.onerror = function (event) {
-                    console.error('Speech recognition error:', event.error);
+                    recognition.onerror = function (event) {
+                        console.error('Speech recognition error:', event.error);
+                        // Handle errors, e.g., display an error message to the user
+                    };
+
+                    recognition.onend = function () {
+                        if (isTranslating) {
+                            // Re-initialize recognition if it ended unexpectedly
+                            initializeRecognition();
+                            // Introduce a delay before restarting to avoid potential issues
+                            setTimeout(() => {
+                                recognition.start();
+                            }, 1000); // Adjust the delay as needed
+                        }
+                    };
+                } catch (error) {
+                    console.error('Error accessing microphone:', error);
                     // Handle errors, e.g., display an error message to the user
-                };
-
-                recognition.onend = function () {
-                    if (isTranslating) {
-                        // Re-initialize recognition if it ended unexpectedly
-                        initializeRecognition();
-                        // Introduce a delay before restarting to avoid potential issues
-                        setTimeout(() => {
-                            recognition.start();
-                        }, 1000); // Adjust the delay as needed
-                    }
-                };
+                }
             }
 
             initializeRecognition();
