@@ -69,7 +69,7 @@
             startButton.addEventListener('click', function () {
                 const button = document.getElementById('startButton');
 
-                if (button.textContent === 'Start Recording') {
+                if (button.textContent === 'Start Translating') {
                     console.log('Starting recognition...'); // Add a debugging statement
                     button.textContent = 'Stop Translating';
                     isTranslating = true;
@@ -86,7 +86,7 @@
                     button.style.backgroundColor = 'red';
                 } else {
                     console.log('Stopping recognition...'); // Add a debugging statement
-                    button.textContent = 'Start Recording';
+                    button.textContent = 'Start Translating';
                     isTranslating = false;
                     recognition.stop();
 
