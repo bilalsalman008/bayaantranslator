@@ -15,7 +15,7 @@ body {
 }
 
 #logo {
-    width: 110px; /* Adjust the width as needed */
+    width: 70px; /* Adjust the width as needed */
     height: auto;
     margin-bottom: 10px;
 }
@@ -27,11 +27,12 @@ h1 {
 
 #app {
     text-align: center;
-    margin-top: 60px; /* Adjust the margin-top as needed */
+    margin-top: 20px; /* Adjust the margin-top as needed */
 }
 
 button {
-    width: 150px;
+    width: 70%; /* Adjust the width as needed */
+    max-width: 200px; /* Set a maximum width */
     padding: 10px;
     background-color: #007bff;
     color: #fff;
@@ -49,10 +50,25 @@ button:hover {
 #translation {
     margin: 20px 0;
     padding: 10px;
+    width: 90%; /* Adjust the width as needed */
+    max-width: 600px; /* Set a maximum width */
     background-color: #f5f5f5;
     border-radius: 5px;
 }
 
 #translation {
     background-color: #e0e0e0;
+}
+
+/* Media query for small screens (phones) */
+@media only screen and (max-width: 600px) {
+    #app {
+        padding: 10px;
+    }
+
+    #transcription,
+    #translation {
+        width: 100%;
+        max-width: none;
+    }
 }
