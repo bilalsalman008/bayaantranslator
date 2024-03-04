@@ -15,7 +15,7 @@ body {
 }
 
 #logo {
-    width: 70px; /* Adjust the width as needed */
+    width: 80px; /* Adjust the logo size for smaller screens */
     height: auto;
     margin-bottom: 10px;
 }
@@ -23,35 +23,23 @@ body {
 h1 {
     margin-top: 10px;
     color: #fff;
+    font-size: 1.5em; /* Adjust the font size for the header on smaller screens */
 }
 
 #app {
     text-align: center;
-    margin-top: 20px; /* Adjust the margin-top as needed */
+    margin-top: 30px; /* Adjust the margin-top for smaller screens */
 }
 
 button {
-    width: 70%; /* Adjust the width as needed */
-    max-width: 200px; /* Set a maximum width */
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #0056b3;
+    width: 100%; /* Make the button full width on smaller screens */
+    margin: 10px 0; /* Add some margin for better spacing */
 }
 
 #transcription,
 #translation {
     margin: 20px 0;
     padding: 10px;
-    width: 90%; /* Adjust the width as needed */
-    max-width: 600px; /* Set a maximum width */
     background-color: #f5f5f5;
     border-radius: 5px;
 }
@@ -62,13 +50,8 @@ button:hover {
 
 /* Media query for small screens (phones) */
 @media only screen and (max-width: 600px) {
-    #app {
-        padding: 10px;
-    }
-
-    #transcription,
-    #translation {
-        width: 100%;
-        max-width: none;
+    #logo {
+        width: 50px; /* Adjust the logo size for smaller screens */
     }
 }
+
