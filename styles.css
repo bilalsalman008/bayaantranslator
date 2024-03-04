@@ -11,7 +11,6 @@ body {
     height: 100vh; /* Ensure full height of the viewport */
 }
 
-
 .container {
     width: 80%; /* Adjust the width as needed */
     background-color: rgba(0, 0, 0, 0.7);
@@ -23,7 +22,10 @@ body {
 
 h1 {
     margin-top: 0;
-    color: #007bff; /* Change color as needed */
+    color: #fff; /* Text color */
+    background-color: #000; /* Background color */
+    padding: 10px; /* Add padding around the title */
+    border-radius: 10px; /* Add rounded corners to the title box */
 }
 
 .button-container {
@@ -48,6 +50,9 @@ button:hover {
 
 .translations {
     margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.1); /* Light background for translation section */
+    padding: 20px; /* Add padding to the translation section */
+    border-radius: 10px; /* Add rounded corners to the translation box */
 }
 
 .transcription,
