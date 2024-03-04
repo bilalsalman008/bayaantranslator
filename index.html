@@ -11,26 +11,15 @@
             const translationElement = document.getElementById('translation');
             const startButton = document.getElementById('startButton');
 
+            let recognition;
             let isTranslating = false;
-            let audioContext;
-            let mediaRecorder;
-            let audioChunks = [];
 
             async function initializeRecognition() {
                 try {
                     // Prompt for microphone access
                     await navigator.mediaDevices.getUserMedia({ audio: true });
 
-                    if ('webkitSpeechRecognition' in window) {
-                        recognition = new webkitSpeechRecognition();
-                    } else if ('SpeechRecognition' in window) {
-                        recognition = new SpeechRecognition();
-                    } else {
-                        console.error('Speech recognition not supported');
-                        // Handle lack of support, e.g., display an error message to the user
-                        return;
-                    }
-
+                    recognition = new webkitSpeechRecognition();
                     recognition.lang = 'ur-IN'; // Set the source language (Urdu in Pakistan)
                     recognition.continuous = true; // Enable continuous mode
 
@@ -68,7 +57,6 @@
                             }, 1000); // Adjust the delay as needed
                         }
                     };
-
                 } catch (error) {
                     console.error('Error accessing microphone:', error);
                     // Handle errors, e.g., display an error message to the user
@@ -173,6 +161,4 @@
         <p id="translation">Translation: </p>
     </div>
 </body>
-</html>
-
-
+</html> 
