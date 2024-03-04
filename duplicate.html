@@ -1,3 +1,5 @@
+VERSION 1:
+
 <!-- <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,6 +59,186 @@
                             }, 1000); // Adjust the delay as needed
                         }
                     };
+                } catch (error) {
+                    console.error('Error accessing microphone:', error);
+                    // Handle errors, e.g., display an error message to the user
+                }
+            }
+
+            initializeRecognition();
+
+            // Add an event listener to the startButton
+            startButton.addEventListener('click', function () {
+                const button = document.getElementById('startButton');
+
+                if (button.textContent === 'Start Recording') {
+                    console.log('Starting recognition...'); // Add a debugging statement
+                    button.textContent = 'Stop Translating';
+                    isTranslating = true;
+
+                    // Start or restart recognition
+                    if (recognition) {
+                        recognition.start();
+                    } else {
+                        initializeRecognition();
+                        recognition.start();
+                    }
+
+                    // Add UI feedback, for example:
+                    button.style.backgroundColor = 'red';
+                } else {
+                    console.log('Stopping recognition...'); // Add a debugging statement
+                    button.textContent = 'Start Recording';
+                    isTranslating = false;
+                    recognition.stop();
+
+                    // Reset UI feedback, for example:
+                    button.style.backgroundColor = ''; // Reset to default
+                }
+            });
+
+            async function detectLanguage(text) {
+                const apiKey = 'AIzaSyCTPg2sV7dQ-nfZQwQf2BN73jcs7WLdpHM';
+                const apiUrl = 'https://translation.googleapis.com/language/translate/v2/detect';
+
+                try {
+                    const response = await fetch(`${apiUrl}?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            q: text,
+                        }),
+                    });
+
+                    const data = await response.json();
+                    return data.data.detections[0][0].language;
+                } catch (err) {
+                    console.error('Language detection error:', err);
+                    throw new Error('Language detection failed. Please try again.');
+                }
+            }
+
+            async function translateAudio(audioContent, sourceLanguage, targetLanguage) {
+                const apiKey = 'AIzaSyCTPg2sV7dQ-nfZQwQf2BN73jcs7WLdpHM';
+                const apiUrl = 'https://translation.googleapis.com/language/translate/v2';
+
+                try {
+                    // Display loading spinner or other feedback
+                    translationElement.innerText = 'Translation: Loading...';
+
+                    const response = await fetch(`${apiUrl}?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            q: audioContent,
+                            source: sourceLanguage,
+                            target: targetLanguage,
+                        }),
+                    });
+
+                    const resultData = await response.json();
+                    return resultData.data.translations[0].translatedText;
+                } catch (err) {
+                    console.error('Translation error:', err);
+                    throw new Error('Translation failed. Please try again.');
+                } finally {
+                    // Hide loading spinner or other feedback
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+    <div id="app">
+        <div id="header">
+            <img id="logo" src="logo.png" alt="Logo">
+            <h1>Bismillah Bayaan Translator</h1>
+        </div>
+        <button id="startButton">Start Recording</button>
+        <p id="transcription">Transcription: </p>
+        <p id="translation">Translation: </p>
+    </div>
+</body>
+</html> -->
+
+
+
+
+VERSION 2:
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Voice Translation</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const transcriptionElement = document.getElementById('transcription');
+            const translationElement = document.getElementById('translation');
+            const startButton = document.getElementById('startButton');
+
+            let recognition;
+            let isTranslating = false;
+
+            async function initializeRecognition() {
+                try {
+                    // Prompt for microphone access
+                    await navigator.mediaDevices.getUserMedia({ audio: true });
+
+                    if ('webkitSpeechRecognition' in window) {
+                        recognition = new webkitSpeechRecognition();
+                    } else if ('SpeechRecognition' in window) {
+                        recognition = new SpeechRecognition();
+                    } else {
+                        console.error('Speech recognition not supported');
+                        // Handle lack of support, e.g., display an error message to the user
+                        return;
+                    }
+
+                    recognition.lang = 'ur-IN'; // Set the source language (Urdu in Pakistan)
+                    recognition.continuous = true; // Enable continuous mode
+
+                    recognition.onresult = async function (event) {
+                        const audioContent = event.results[event.results.length - 1][0].transcript;
+                        transcriptionElement.innerText = `Transcription: ${audioContent}`;
+
+                        if (isTranslating) {
+                            // Dynamically detect the source language
+                            const detectedLanguage = await detectLanguage(audioContent);
+
+                            // Translate the audio content to English
+                            try {
+                                const result = await translateAudio(audioContent, detectedLanguage, 'en');
+                                translationElement.innerText = `Translation: ${result}`;
+                            } catch (err) {
+                                console.error('Translation error:', err);
+                                translationElement.innerText = 'Translation: Error. Please try again.';
+                            }
+                        }
+                    };
+
+                    recognition.onerror = function (event) {
+                        console.error('Speech recognition error:', event.error);
+                        // Handle errors, e.g., display an error message to the user
+                    };
+
+                    recognition.onend = function () {
+                        if (isTranslating) {
+                            // Re-initialize recognition if it ended unexpectedly
+                            initializeRecognition();
+                            // Introduce a delay before restarting to avoid potential issues
+                            setTimeout(() => {
+                                recognition.start();
+                            }, 1000); // Adjust the delay as needed
+                        }
+                    };
+
                 } catch (error) {
                     console.error('Error accessing microphone:', error);
                     // Handle errors, e.g., display an error message to the user
