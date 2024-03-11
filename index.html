@@ -1,19 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Voice Translation</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-functions.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const transcriptionElement = document.getElementById('transcription');
@@ -25,10 +16,6 @@
 
             async function initializeRecognition() {
                 try {
-                    // Your Google Cloud Speech-to-Text API configuration
-                    const apiKey = 'AIzaSyCTPg2sV7dQ-nfZQwQf2BN73jcs7WLdpHM';
-                    const apiUrl = 'https://speech.googleapis.com/v1/speech:recognize?key=' + apiKey;
-
                     // Prompt for microphone access
                     await navigator.mediaDevices.getUserMedia({ audio: true });
 
@@ -37,8 +24,7 @@
                     recognition.continuous = true; // Enable continuous mode
 
                     recognition.onresult = async function (event) {
-                        // Get the transcript from Google Cloud Speech-to-Text API response
-                        const audioContent = event.results[0].alternatives[0].transcript;
+                        const audioContent = event.results[event.results.length - 1][0].transcript;
                         transcriptionElement.innerText = `Transcription: ${audioContent}`;
 
                         if (isTranslating) {
@@ -164,7 +150,6 @@
         });
     </script>
 </head>
-
 <body>
     <div id="app">
         <div id="header">
@@ -177,6 +162,4 @@
         <p id="translation">Translation: </p>
     </div>
 </body>
-
-</html>
-
+</html> 
