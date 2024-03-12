@@ -19,7 +19,7 @@
                     // Prompt for microphone access
                     await navigator.mediaDevices.getUserMedia({ audio: true });
 
-                    recognition = new SpeechRecognition() || new webkitSpeechRecognition(); // Fallback for Safari
+                    recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
                     recognition.lang = 'ur-IN'; // Set the source language (Urdu in Pakistan)
                     recognition.continuous = true; // Enable continuous mode
 
@@ -96,7 +96,7 @@
             });
 
             async function detectLanguage(text) {
-                const apiKey = 'AIzaSyCTPg2sV7dQ-nfZQwQf2BN73jcs7WLdpHM';
+                const apiKey = 'YOUR_GOOGLE_CLOUD_API_KEY';
                 const apiUrl = 'https://translation.googleapis.com/language/translate/v2/detect';
 
                 try {
@@ -119,7 +119,7 @@
             }
 
             async function translateAudio(audioContent, sourceLanguage, targetLanguage) {
-                const apiKey = 'AIzaSyCTPg2sV7dQ-nfZQwQf2BN73jcs7WLdpHM';
+                const apiKey = 'YOUR_GOOGLE_CLOUD_API_KEY';
                 const apiUrl = 'https://translation.googleapis.com/language/translate/v2';
 
                 try {
