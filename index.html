@@ -19,7 +19,7 @@
                     // Prompt for microphone access
                     await navigator.mediaDevices.getUserMedia({ audio: true });
 
-                    recognition = new webkitSpeechRecognition();
+                    recognition = new SpeechRecognition() || new webkitSpeechRecognition(); // Fallback for Safari
                     recognition.lang = 'ur-IN'; // Set the source language (Urdu in Pakistan)
                     recognition.continuous = true; // Enable continuous mode
 
@@ -162,4 +162,4 @@
         <p id="translation">Translation: </p>
     </div>
 </body>
-</html> 
+</html>
