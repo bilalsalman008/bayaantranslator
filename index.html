@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Voice Translation</title>
     <link rel="stylesheet" href="styles.css">
-    
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const transcriptionElement = document.getElementById('transcription');
             const translationElement = document.getElementById('translation');
             const startButton = document.getElementById('startButton');
-            const loadingSpinner = document.getElementById('loadingSpinner');
 
             let recognition;
             let isTranslating = false;
@@ -67,16 +65,16 @@
 
             initializeRecognition();
 
+            // Add an event listener to the startButton
             startButton.addEventListener('click', function () {
                 const button = document.getElementById('startButton');
 
                 if (button.textContent === 'Start Translating') {
+                    console.log('Starting recognition...'); // Add a debugging statement
                     button.textContent = 'Stop Translating';
                     isTranslating = true;
 
-                    // Display loading spinner
-                    loadingSpinner.style.display = 'block';
-
+                    // Start or restart recognition
                     if (recognition) {
                         recognition.start();
                     } else {
@@ -84,16 +82,16 @@
                         recognition.start();
                     }
 
+                    // Add UI feedback, for example:
                     button.style.backgroundColor = 'red';
                 } else {
+                    console.log('Stopping recognition...'); // Add a debugging statement
                     button.textContent = 'Start Translating';
                     isTranslating = false;
                     recognition.stop();
 
-                    // Hide loading spinner
-                    loadingSpinner.style.display = 'none';
-
-                    button.style.backgroundColor = '';
+                    // Reset UI feedback, for example:
+                    button.style.backgroundColor = ''; // Reset to default
                 }
             });
 
@@ -125,9 +123,7 @@
                 const apiUrl = 'https://translation.googleapis.com/language/translate/v2';
 
                 try {
-                    // Display loading spinner
-                    loadingSpinner.style.display = 'block';
-
+                    // Display loading spinner or other feedback
                     translationElement.innerText = 'Translation: Loading...';
 
                     const response = await fetch(`${apiUrl}?key=${apiKey}`, {
@@ -148,8 +144,7 @@
                     console.error('Translation error:', err);
                     throw new Error('Translation failed. Please try again.');
                 } finally {
-                    // Hide loading spinner
-                    loadingSpinner.style.display = 'none';
+                    // Hide loading spinner or other feedback
                 }
             }
         });
@@ -165,9 +160,6 @@
         <button id="startButton">Start Translating</button>
         <p id="transcription">Transcription: </p>
         <p id="translation">Translation: </p>
-        <!-- Added loading spinner element -->
-        <div id="loadingSpinner"></div>
     </div>
 </body>
-</html>
-
+</html> 
